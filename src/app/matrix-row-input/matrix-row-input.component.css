@@ -1,0 +1,8 @@
+input.ng-dirty.ng-invalid {
+  color: rgb(185, 28, 28);
+  background-color: #fbb;
+}
+
+input.ng-dirty.ng-invalid:after {
+  content: 'Invalid number';
+}
