@@ -1,0 +1,6 @@
+<div class="flex justify-center gap-2">
+  <input type="text"
+         class="bg-gray-900 text-white px-1 py-1 w-24 focus:outline-white"
+         *ngFor="let formControl of formControls"
+         [formControl]="formControl">
+</div>
