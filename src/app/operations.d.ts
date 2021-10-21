@@ -1,9 +1,11 @@
+import Fraction from "fraction.js";
+
 type EOpNames = 'Swap' | 'Mult' | 'MultSum';
 interface AbstractEOp {
   name: EOpNames;
   Ri: number;
   Rj: number;
-  factor: number;
+  factor: Fraction;
 }
 
 /**
@@ -33,7 +35,7 @@ export interface EOpMult extends AbstractEOp {
   /**
    * Multiplying factor for {@link Ri}. Must be different from 0
    */
-  factor: number;
+  factor: Fraction;
 }
 
 /**
@@ -57,7 +59,7 @@ export interface EOpMultSum extends AbstractEOp {
   /**
    * Multiplying factor for {@link Ri}.
    */
-  factor: number;
+  factor: Fraction;
 }
 
 export type EOp = EOpSwap | EOpMult | EOpMultSum;

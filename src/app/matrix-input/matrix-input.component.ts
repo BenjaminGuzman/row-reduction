@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {MatrixRowInputComponent} from "../matrix-row-input/matrix-row-input.component";
 import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
+import Fraction from "fraction.js";
 
 @Component({
   selector: 'app-matrix-input',
@@ -138,10 +139,10 @@ export class MatrixInputComponent implements OnInit, AfterViewInit {
   /**
    * @return the matrix or null if it has invalid entries
    */
-  public getMatrix(): number[][] | null {
-    const mat: number[][] = [];
+  public getMatrix(): Fraction[][] | null {
+    const mat: Fraction[][] = [];
     for (const matRowInput of this._matrixRows) {
-      const tmpRowValues: number[] | null = matRowInput.instance.getValues();
+      const tmpRowValues: Fraction[] | null = matRowInput.instance.getValues();
       if (!tmpRowValues)
         return null;
 
