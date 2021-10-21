@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
+import Fraction from "fraction.js";
 
 @Component({
   selector: 'app-matrix-row-input',
@@ -28,7 +29,7 @@ export class MatrixRowInputComponent implements OnInit {
       for (let i = this.formControls.length; i < cols; ++i)
         this.formControls.push(new FormControl(undefined, [
           Validators.required,
-          Validators.pattern(/^[-+]?\d*(\.\d+)?$/)
+          Validators.pattern(/^[-+]?\d*([./]\d+)?$/)
         ]));
 
     this._changeDetectorRef.markForCheck();
@@ -50,17 +51,13 @@ export class MatrixRowInputComponent implements OnInit {
   /**
    * @return null if there is at least one invalid input
    */
-  public getValues(): number[] | null {
+  public getValues(): Fraction[] | null {
     if (!this.isValid()) {
       this._changeDetectorRef.markForCheck();
       return null;
     }
 
-    return this.formControls.map((formControl: FormControl) => {
-      if (typeof formControl.value === 'string')
-        return parseFloat(formControl.value);
-      return formControl.value;
-    });
+    return this.formControls.map((formControl: FormControl) => new Fraction(formControl.value));
   }
 
   /**

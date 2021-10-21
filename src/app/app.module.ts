@@ -13,7 +13,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatrixComponent} from './matrix/matrix.component';
 import {OperationsComponent} from './operations/operations.component';
-import {DecimalPipe} from "@angular/common";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 
 @NgModule({
@@ -33,8 +33,9 @@ import {DecimalPipe} from "@angular/common";
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
+    MatProgressBarModule,
   ],
-  providers: [DecimalPipe],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

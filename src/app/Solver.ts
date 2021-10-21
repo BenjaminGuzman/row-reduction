@@ -1,4 +1,5 @@
 import {EOpMult, EOpMultSum, EOpSwap} from "./operations";
+import Fraction from "fraction.js";
 
 export class Solver {
   /**
@@ -6,7 +7,7 @@ export class Solver {
    *
    * Its contents will be overwritten as the program tries to reduce this matrix
    */
-  private readonly _mat: number[][];
+  private readonly _mat: Fraction[][];
 
   /**
    * Array of the same length as {@link _mat}
@@ -36,8 +37,8 @@ export class Solver {
    * @param printMultSumOps callback to be invoked each time multiplication and sum operation was performed
    */
   constructor(
-    inMat: number[][],
-    private readonly printMat: (mat: number[][]) => void,
+    inMat: Fraction[][],
+    private readonly printMat: (mat: Fraction[][]) => void,
     private readonly printSwapOp: (op: EOpSwap) => void,
     private readonly printMultOp: (op: EOpMult) => void,
     private readonly printMultSumOps: (ops: EOpMultSum[]) => void,
@@ -55,9 +56,11 @@ export class Solver {
    *
    * Call this until it returns false to completely reduce the matrix
    *
+   * @param rref if true, reduction will leave the matrix in reduced row echelon form (Gauss-Jordan).
+   *             If false, the matrix will be in reduced echelon form only
    * @return true if it can be reduced, false otherwise (no pivot could be selected)
    */
-  public reduce(): boolean {
+  public reduce(rref: boolean = true): boolean {
     // select the pivot row in O(nm)
     let minCountZeros: number = this._nCols; // this is the maximum amount of zeros that can be present in a row
     let pivotRow: number = -1;
@@ -87,21 +90,22 @@ export class Solver {
 
     // by now pivotRow should actually be firstRow
     let pivotCol: number = minCountZeros;
-    let pivot: number = this._mat[this.firstRow][pivotCol];
-    if (pivot !== 1) {
+    let pivot: Fraction = this._mat[this.firstRow][pivotCol];
+    if (!pivot.equals(1)) {
       for (let j = 0; j < this._nCols; ++j) // ensure the pivot is 1
-        this._mat[this.firstRow][j] /= pivot;
+        this._mat[this.firstRow][j] = this._mat[this.firstRow][j].div(pivot);
 
       this.printMultOp(<EOpMult>{
         Ri: this.firstRow,
-        factor: 1 / pivot,
+        factor: new Fraction(1).div(pivot),
         name: "Mult"
       });
       this.printMat(this._mat);
     }
 
     // reduce rows above the pivot in O(nm)
-    this.rowReduce(0, this.firstRow, pivotCol);
+    if (rref) // only reduce rows above if rref is desired
+      this.rowReduce(0, this.firstRow, pivotCol);
 
     // reduce rows below the pivot in O(nm)
     this.rowReduce(this.firstRow + 1, this._nRows, pivotCol);
@@ -116,7 +120,7 @@ export class Solver {
     return true;
   }
 
-  get mat(): number[][] {
+  get mat(): Fraction[][] {
     return this._mat;
   }
 
@@ -135,7 +139,7 @@ export class Solver {
    */
   private countLZeros(idx: number): number {
     for (let nZeros = 0; nZeros < this._nCols; ++nZeros)
-      if (this._mat[idx][nZeros] !== 0)
+      if (!this._mat[idx][nZeros].equals(0))
         return nZeros;
 
     return this._nCols;
@@ -150,12 +154,12 @@ export class Solver {
   private rowReduce(start: number, end: number, pivotCol: number): void {
     for (let i = start; i < end; ++i) { // for each row below the pivot
       const firstNonZeroInRow = this._mat[i][pivotCol];
-      if (firstNonZeroInRow === 0) // there is no need to process this row since it already has a 0 in the pivotCol
+      if (firstNonZeroInRow.equals(0)) // there is no need to process this row since it already has a 0 in the pivotCol
         continue;
 
       // start from the pivot col and forward, since all values behind must be 0 by now
       for (let j = pivotCol; j < this._nCols; ++j) { // for each column in the row
-        this._mat[i][j] -= firstNonZeroInRow * this._mat[this.firstRow][j];
+        this._mat[i][j] = this._mat[i][j].sub(firstNonZeroInRow.mul(this._mat[this.firstRow][j]));
         // think what would happen if j = pivotCol
         // this._outMat[i][pivotCol] = this._inMat[i][pivotCol] - firstNonZeroInRow * this._outMat[this.firstRow][pivotCol];
         // this._outMat[i][pivotCol] = this._inMat[i][pivotCol] - firstNonZeroInRow * 1;

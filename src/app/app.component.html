@@ -1,15 +1,32 @@
-<h1 class="text-center">Row reduction</h1>
-<app-matrix-input #matrixInput></app-matrix-input>
-<div class="flex justify-center flex-wrap gap-2">
-  <!-- TODO do this more in a more pro way, make matrix-input a custom angular form control -->
-  <button mat-raised-button (click)="reduceGaussJordan()">Reduced row-echelon form (Gauss-Jordan)</button>
-  <button mat-raised-button (click)="reduceGauss()">Row echelon form</button>
+<div class="w-full">
+  <h1 class="text-center">Row reduction</h1>
+  <app-matrix-input #matrixInput></app-matrix-input>
+  <div class="flex justify-center flex-wrap gap-2">
+    <!-- TODO do this more in a more pro way, make matrix-input a custom angular form control -->
+    <button mat-raised-button (click)="reduce(true)">Reduced row-echelon form (Gauss-Jordan)</button>
+    <button mat-raised-button (click)="reduce(false)">Row echelon form</button>
+  </div>
 </div>
+<mat-progress-bar *ngIf="computing" mode="indeterminate" class="mx-5 my-2"></mat-progress-bar>
 
-<div class="flex my-5 mx-5 gap-x-10 flex-nowrap">
+<div class="flex my-5 p-5 gap-x-10 flex-nowrap w-full overflow-auto">
   <div #stepsContainer></div>
 </div>
 
-<div class="fixed bottom-0 w-full">
-  <p class="text-center">Made by Team 7</p>
+<div class="mx-auto grid grid-cols-4 justify-items-center w-11/12 sm:w-1/3 lg:w-1/4 xl:w-1/6" [ngClass]="{'visible': shouldShowSummary, 'invisible': !shouldShowSummary}">
+  <p class="col-span-4 text-center text-xl">Operations summary</p>
+
+  <div class="col-span-3" #swapOpSummary></div>
+  <p>{{opsSummary.swap}}</p>
+
+  <div class="col-span-3" #multOpSummary></div>
+  <p>{{opsSummary.mult}}</p>
+
+  <div class="col-span-3" #multSumOpSummary></div>
+  <p>{{opsSummary.multSum}}</p>
+
+  <p class="col-span-3 text-lg">Total</p>
+  <p>{{opsSummary.total}}</p>
 </div>
+
+<p class="w-full text-center">Made by Team 7</p>
