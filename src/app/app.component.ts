@@ -36,7 +36,13 @@ export class AppComponent {
     this._operationsComponentFactory = componentFactoryResolver.resolveComponentFactory(OperationsComponent);
   }
 
-  reduceGaussJordan() {
+  public reduceGauss() {
+    const snack = this._snackBar.open('Feature not ready yet. Coming soon!', 'OK');
+    setTimeout(() => snack.dismiss(), 3_000);
+    return;
+  }
+
+  public reduceGaussJordan() {
     this._mat = this.matrixInput.getMatrix();
     if (!this._mat) {
       this._snackBar.open('Matrix is not valid. Remember all fields are required and must be valid numbers', 'OK', {
