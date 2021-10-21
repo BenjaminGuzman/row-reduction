@@ -1,24 +1,28 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatrixInputComponent } from './matrix-input/matrix-input.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatrixInputComponent} from './matrix-input/matrix-input.component';
 import {MatGridListModule} from "@angular/material/grid-list";
-import { MatrixRowInputComponent } from './matrix-row-input/matrix-row-input.component';
+import {MatrixRowInputComponent} from './matrix-row-input/matrix-row-input.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { StepComponent } from './step/step.component';
+import {MatrixComponent} from './matrix/matrix.component';
+import {OperationsComponent} from './operations/operations.component';
+import {DecimalPipe} from "@angular/common";
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MatrixInputComponent,
     MatrixRowInputComponent,
-    StepComponent
+    MatrixComponent,
+    OperationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,9 +32,10 @@ import { StepComponent } from './step/step.component';
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
-  providers: [],
+  providers: [DecimalPipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

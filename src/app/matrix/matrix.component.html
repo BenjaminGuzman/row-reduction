@@ -1,0 +1,5 @@
+<div class="flex flex-col border-l-2 border-r-2 border-black rounded-lg">
+  <div class="{{heightClass}} flex text-center gap-x-3" *ngFor="let row of matrix">
+    <p *ngFor="let element of row" class="w-14">{{element | number:'1.0-4'}}</p>
+  </div>
+</div>

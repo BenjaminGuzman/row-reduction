@@ -20,7 +20,7 @@ import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
 })
 export class MatrixInputComponent implements OnInit, AfterViewInit {
   private static MIN_ROWS = 1;
-  private static MIN_COLS = 1;
+  private static MIN_COLS = 2;
   private static MAX_ROWS_WARN = 10;
   private static MAX_COLS_WARN = 10;
 
@@ -97,7 +97,7 @@ export class MatrixInputComponent implements OnInit, AfterViewInit {
 
   removeCol(): void {
     if (this.nCols <= MatrixInputComponent.MIN_COLS) {
-      this.autoDismissSnackBar(`There must be at least ${MatrixInputComponent.MIN_COLS} column`, 'OK', {
+      this.autoDismissSnackBar(`There must be at least ${MatrixInputComponent.MIN_COLS} columns`, 'OK', {
         panelClass: 'text-red-600'
       });
       return;
@@ -133,5 +133,21 @@ export class MatrixInputComponent implements OnInit, AfterViewInit {
   public randomFill() {
     for (const matRowInput of this._matrixRows)
       matRowInput.instance.randomFill();
+  }
+
+  /**
+   * @return the matrix or null if it has invalid entries
+   */
+  public getMatrix(): number[][] | null {
+    const mat: number[][] = [];
+    for (const matRowInput of this._matrixRows) {
+      const tmpRowValues: number[] | null = matRowInput.instance.getValues();
+      if (!tmpRowValues)
+        return null;
+
+      mat.push(tmpRowValues);
+    }
+
+    return mat;
   }
 }
