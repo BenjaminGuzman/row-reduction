@@ -1,0 +1,5 @@
+<div class="flex flex-col text-center">
+  <div class="{{heightClass}}" *ngFor="let op of ops">
+    <span class="whitespace-nowrap" [innerHTML]="renderOp(op)"></span>
+  </div>
+</div>

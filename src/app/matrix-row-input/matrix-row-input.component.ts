@@ -42,14 +42,25 @@ export class MatrixRowInputComponent implements OnInit {
    * @return true if all the elements in the row are valid, false otherwise
    */
   public isValid(): boolean {
-    return this.formControls.every((control: FormControl) => control.valid);
+    // if control is not valid, mark it as dirty
+    // This is a quick fix, a pro fix would be to make this a custom angular form control and use it with a form group
+    return this.formControls.every((control: FormControl) => control.valid || control.markAsDirty());
   }
 
   /**
    * @return null if there is at least one invalid input
    */
   public getValues(): number[] | null {
-    return this.formControls.map((formControl: FormControl) => formControl.value);
+    if (!this.isValid()) {
+      this._changeDetectorRef.markForCheck();
+      return null;
+    }
+
+    return this.formControls.map((formControl: FormControl) => {
+      if (typeof formControl.value === 'string')
+        return parseFloat(formControl.value);
+      return formControl.value;
+    });
   }
 
   /**
@@ -58,7 +69,10 @@ export class MatrixRowInputComponent implements OnInit {
    * WARNING: this will overwrite current values
    */
   public randomFill(): void {
-    for (const formControl of this.formControls)
+    for (const formControl of this.formControls) {
       formControl.setValue(Math.round(Math.random() * 20));
+      formControl.updateValueAndValidity();
+    }
+    this._changeDetectorRef.markForCheck();
   }
 }

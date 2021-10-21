@@ -1,8 +1,13 @@
 <h1 class="text-center">Row reduction</h1>
-<app-matrix-input></app-matrix-input>
+<app-matrix-input #matrixInput></app-matrix-input>
 <div class="flex justify-center flex-wrap gap-2">
-  <button mat-raised-button>Reduced row-echelon form (Gauss-Jordan)</button>
-  <button mat-raised-button>Row echelon form (Gauss and back-substitution)</button>
+  <!-- TODO do this more in a more pro way, make matrix-input a custom angular form control -->
+  <button mat-raised-button (click)="reduceGaussJordan()">Reduced row-echelon form (Gauss-Jordan)</button>
+  <button mat-raised-button>Row echelon form</button>
+</div>
+
+<div class="flex my-5 mx-5 gap-x-10 flex-nowrap">
+  <div #stepsContainer></div>
 </div>
 
 <div class="fixed bottom-0 w-full">
