@@ -5,7 +5,7 @@
     "ng": "ng",
     "tailwind": "cd src && ./tailwind.sh && cd ..",
     "start": "NODE_ENV=development npm run tailwind && ng serve",
-    "prebuild": "NODE_ENV=production && npm run tailwind",
+    "prebuild": "NODE_ENV=production npm run tailwind",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
