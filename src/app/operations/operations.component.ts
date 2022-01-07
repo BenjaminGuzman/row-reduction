@@ -8,7 +8,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import {EOp} from "../operations";
+import {EOp, EOpMult, EOpMultSum, EOpSwap} from "../operations";
 import {render} from "katex";
 
 @Component({
@@ -55,12 +55,15 @@ export class OperationsComponent implements OnInit, AfterViewInit {
 
     switch (op.name) {
       case "Mult":
+        op = op as EOpMult;
         return render(`${op.factor.toLatex()}\\ R_{${op.Ri + 1}}\\ \\rightarrow R_{${op.Ri + 1}}`, emptyEl);
       case "MultSum":
-        const operator = op.factor.compare(0) < 0 ? '+' : '-';
-        const factor = op.factor.equals(1) ? '' : op.factor.abs().toLatex();
-        return render(`R_{${op.Rj + 1}}\\ ${operator}\\ ${factor}\\ R_{${op.Ri + 1}}\\ \\rightarrow\\ R_{${op.Rj + 1}}`, emptyEl);
+        const o = op as EOpMultSum;
+        const operator = o.factor.compare(0) < 0 ? '+' : '-';
+        const factor = o.factor.equals(1) ? '' : o.factor.abs().toLatex();
+        return render(`R_{${o.Rj + 1}}\\ ${operator}\\ ${factor}\\ R_{${o.Ri + 1}}\\ \\rightarrow\\ R_{${o.Rj + 1}}`, emptyEl);
       case "Swap":
+        op = op as EOpSwap;
         return render(`R_{${op.Ri + 1}}\\ \\leftrightarrow\\ R_{${op.Rj + 1}}`, emptyEl);
     }
   }

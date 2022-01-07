@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import Fraction from "fraction.js";
-import {render, renderToString} from "katex";
+import {render} from "katex";
 
 @Component({
   selector: 'app-matrix',
@@ -41,7 +41,6 @@ export class MatrixComponent implements OnInit, AfterViewInit {
       for (const element of row) {
         // create element container
         const elContainer = this._renderer.createElement('div');
-        this._renderer.addClass(elContainer, 'w-min');
         this._renderer.addClass(elContainer, 'whitespace-nowrap');
         this._renderer.appendChild(this.rowsContainer.nativeElement, elContainer);
         render(element.toLatex(), elContainer);
