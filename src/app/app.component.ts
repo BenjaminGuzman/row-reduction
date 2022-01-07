@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {MatrixInputComponent} from "./matrix-input/matrix-input.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Solver} from "./Solver";
+import {RowReducer} from "./RowReducer";
 import {EOpMult, EOpMultSum, EOpSwap} from "./operations";
 import {MatrixComponent} from "./matrix/matrix.component";
 import {OperationsComponent} from "./operations/operations.component";
@@ -40,7 +40,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('multSumOpSummary')
   public multSumOpSummary: ElementRef = undefined as unknown as ElementRef;
 
-  public computing: boolean = false;
+  public isComputing: boolean = false;
   public opsSummary: OpSummary = {
     swap: 0,
     mult: 0,
@@ -48,7 +48,7 @@ export class AppComponent implements AfterViewInit {
     total: 0
   };
 
-  public shouldShowSummary: boolean = false;
+  public isSummaryShown: boolean = false;
 
   private readonly _matrixComponentFactory: ComponentFactory<MatrixComponent>;
   private readonly _operationsComponentFactory: ComponentFactory<OperationsComponent>;
@@ -71,7 +71,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   /**
-   * @param rref same as {@link Solver#reduce}
+   * @param rref same as {@link RowReducer#reduce}
    */
   public reduce(rref: boolean = true) {
     this._mat = this.matrixInput.getMatrix();
@@ -89,37 +89,33 @@ export class AppComponent implements AfterViewInit {
     this.opsSummary.swap = 0;
     this._snackBar.dismiss();
     this.stepsContainer.clear();
-    this.shouldShowSummary = false;
-    this.computing = true;
+    this.isSummaryShown = false;
+    this.isComputing = true;
     this._changeDetectorRef.markForCheck();
 
     this.printMatrix(this._mat);
 
-    const solver = new Solver(
+    const reducer = new RowReducer(
       this._mat,
       (arg) => this.printMatrix(arg),
       (arg) => this.printSwapOp(arg),
       (arg) => this.printMultOp(arg),
       (arg) => this.printMultSumOps(arg)
     );
-    let i = 0;
-    while (solver.reduce(rref)); // reduce until rref is obtained
+    reducer.reduce(rref);
 
-    // show summary
-    this.shouldShowSummary = true;
-
-    this.computing = false;
+    this.isSummaryShown = true;
+    this.isComputing = false;
     this._changeDetectorRef.markForCheck();
   }
 
   public printMatrix(mat: Fraction[][]) {
-    console.table(mat);
     const matComponent = this.stepsContainer.createComponent(this._matrixComponentFactory);
-    matComponent.instance.matrix = mat.map(row => row.map(entry => entry)); // didn't have time to deep-copy the right way
+    matComponent.instance.matrix = mat.map(row => row.map(entry => entry));
+    this._changeDetectorRef.markForCheck();
   }
 
   public printSwapOp(op: EOpSwap) {
-    console.log("Swap", op);
     if (!this._mat)
       return;
 
@@ -136,12 +132,11 @@ export class AppComponent implements AfterViewInit {
   }
 
   public printMultOp(op: EOpMult) {
-    console.log("Mult", op);
     if (!this._mat)
       return;
 
     const opsComponent = this.stepsContainer.createComponent(this._operationsComponentFactory);
-    const ops: EOpSwap[] = [];
+    const ops: EOpMult[] = [];
     for (let i = 0; i < this._mat.length; ++i)
       if (op.Ri === i)
         ops[i] = op;
@@ -153,8 +148,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   public printMultSumOps(ops: EOpMultSum[]) {
-    console.log("Mult sum", ops);
-
     const opsComponent = this.stepsContainer.createComponent(this._operationsComponentFactory);
 
     opsComponent.instance.ops = ops;
