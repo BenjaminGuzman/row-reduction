@@ -13,7 +13,8 @@ export class MatrixRowInputComponent implements OnInit {
 
   private _nCols: number = 0;
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) { }
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {
+  }
 
   ngOnInit(): void {
   }
