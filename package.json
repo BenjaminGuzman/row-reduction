@@ -11,7 +11,7 @@
     "dev:ssr": "ng run row-reduction:serve-ssr",
     "serve:ssr": "node dist/row-reduction/server/main.js",
     "build:ssr": "ng build && ng run row-reduction:server",
-    "prerender": "ng run row-reduction:prerender"
+    "prerender": "npm run tailwind && ng run row-reduction:prerender"
   },
   "private": true,
   "dependencies": {
