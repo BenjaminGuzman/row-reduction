@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MatrixInputComponent } from './matrix-input.component';
+import {MatrixInputComponent} from './matrix-input.component';
 
 describe('MatrixInputComponent', () => {
   let component: MatrixInputComponent;
@@ -8,9 +8,9 @@ describe('MatrixInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MatrixInputComponent ]
+      declarations: [MatrixInputComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -6,6 +6,8 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ElementRef,
+  Inject,
+  PLATFORM_ID,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -17,6 +19,7 @@ import {MatrixComponent} from "./matrix/matrix.component";
 import {OperationsComponent} from "./operations/operations.component";
 import Fraction from "fraction.js";
 import {render} from "katex";
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -58,16 +61,19 @@ export class AppComponent implements AfterViewInit {
   constructor(
     componentFactoryResolver: ComponentFactoryResolver,
     private _snackBar: MatSnackBar,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this._matrixComponentFactory = componentFactoryResolver.resolveComponentFactory(MatrixComponent);
     this._operationsComponentFactory = componentFactoryResolver.resolveComponentFactory(OperationsComponent);
   }
 
   ngAfterViewInit(): void {
-    render('R_i \\leftrightarrow R_j', this.swapOpSummary.nativeElement);
-    render('c R_i \\rightarrow R_i', this.multOpSummary.nativeElement);
-    render('R_j + c R_i \\rightarrow R_j', this.multSumOpSummary.nativeElement);
+    if (isPlatformBrowser(this.platformId)) {
+      render('R_i \\leftrightarrow R_j', this.swapOpSummary.nativeElement);
+      render('c R_i \\rightarrow R_i', this.multOpSummary.nativeElement);
+      render('R_j + c R_i \\rightarrow R_j', this.multSumOpSummary.nativeElement);
+    }
   }
 
   /**

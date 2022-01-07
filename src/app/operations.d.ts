@@ -1,6 +1,7 @@
 import Fraction from "fraction.js";
 
 type EOpNames = 'Swap' | 'Mult' | 'MultSum';
+
 interface AbstractEOp {
   name: EOpNames;
   Ri: number;
@@ -28,7 +29,8 @@ export interface EOpMult extends AbstractEOpWFactor {
 /**
  * Elemental operation: Sum Ri multiplied by c with Rj and place it in Rj. c(Ri) + Rj -> Rj
  */
-export interface EOpMultSum extends AbstractEOp/*, AbstractEOpWFactor*/ {
+export interface EOpMultSum extends AbstractEOp/*, AbstractEOpWFactor*/
+{
   factor: Fraction;
 }
 

@@ -27,7 +27,8 @@ export class MatrixComponent implements OnInit, AfterViewInit {
   @ViewChild('rowsContainer')
   public rowsContainer: ElementRef = undefined as unknown as ElementRef;
 
-  constructor(private _renderer: Renderer2) { }
+  constructor(private _renderer: Renderer2) {
+  }
 
   ngOnInit(): void {
   }

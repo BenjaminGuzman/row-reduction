@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatrixInputComponent} from './matrix-input/matrix-input.component';
@@ -25,8 +24,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     OperationsComponent,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
+    BrowserModule.withServerTransition({appId: 'serverApp'}),
     BrowserAnimationsModule,
     MatGridListModule,
     ReactiveFormsModule,

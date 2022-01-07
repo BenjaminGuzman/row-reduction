@@ -30,7 +30,8 @@ export class OperationsComponent implements OnInit, AfterViewInit {
   @ViewChild('opsContainer')
   public opsContainer: ElementRef = undefined as unknown as ElementRef;
 
-  constructor(private _renderer: Renderer2) { }
+  constructor(private _renderer: Renderer2) {
+  }
 
   ngOnInit(): void {
   }

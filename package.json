@@ -7,7 +7,11 @@
     "start": "ng serve --configuration=development & npm run tailwind -- --watch",
     "build": "npm run tailwind && ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dev:ssr": "ng run row-reduction:serve-ssr",
+    "serve:ssr": "node dist/row-reduction/server/main.js",
+    "build:ssr": "ng build && ng run row-reduction:server",
+    "prerender": "ng run row-reduction:prerender"
   },
   "private": true,
   "dependencies": {
@@ -20,7 +24,10 @@
     "@angular/material": "^12.2.13",
     "@angular/platform-browser": "^12.2.14",
     "@angular/platform-browser-dynamic": "^12.2.14",
+    "@angular/platform-server": "^12.2.14",
     "@angular/router": "^12.2.14",
+    "@nguniversal/express-engine": "^12.1.3",
+    "express": "^4.15.2",
     "fraction.js": "^4.1.2",
     "katex": "^0.13.24",
     "rxjs": "~6.6.0",
@@ -32,6 +39,8 @@
     "@angular-devkit/build-angular": "^12.2.13",
     "@angular/cli": "^12.2.13",
     "@angular/compiler-cli": "^12.2.14",
+    "@nguniversal/builders": "^12.1.3",
+    "@types/express": "^4.17.0",
     "@types/jasmine": "~3.8.0",
     "@types/katex": "^0.11.1",
     "@types/node": "^12.20.37",
